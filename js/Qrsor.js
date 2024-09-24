@@ -1,3 +1,5 @@
+import {settings} from "./settings.js";
+
 export class Qrsor {
 
     constructor(selectors = [], parallaxSpeed = 0) {
@@ -15,6 +17,10 @@ export class Qrsor {
         })
     }
 
+    addTransition(elements) {
+        elements.style.transition = settings.elements.transitionDuration;
+    }
+
     handleMouseMove(element) {
         document.addEventListener('mousemove', (e) => {
             element.style.top = e.pageY + 'px';
@@ -26,6 +32,8 @@ export class Qrsor {
         this.elements = document.querySelectorAll(selector);
 
         this.elements.forEach((element) => {
+            this.addTransition(element);
+
             element.addEventListener('mouseover', () => {
                 this.addOnHover();
             });
@@ -41,15 +49,17 @@ export class Qrsor {
     }
 
     addOnHover() {
-        this.cursor.style.width = "70px";
-        this.cursor.style.height = "70px";
+        this.cursor.style.width = settings.cursor.radius.hover;
+        this.cursor.style.height = settings.cursor.radius.hover;
+        this.cursor.style.backgroundColor = "transparent";
     }
-
     removeWhenOutside(element) {
-        this.cursor.style.width = "25px";
-        this.cursor.style.height = "25px";
+        this.cursor.style.width = settings.cursor.radius.base;
+        this.cursor.style.height = settings.cursor.radius.base;
+        this.cursor.style.backgroundColor = settings.cursor.color;
         element.style.transform = "";
     }
+
 
     handleParallax(element, event, speed) {
         const boxElement = element.getBoundingClientRect();
